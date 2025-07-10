@@ -2,8 +2,6 @@
 
 > A real-time object detection system on NVIDIA Jetson that sends **spoken alerts** to a connected **Bluetooth speaker** when specific objects (like humans, animals, or vehicles) are detected.
 
-![Object Detection in Action](https://example.com/your-image-link.jpg)  
-<!-- 🔄 Replace with your actual image or GIF link -->
 
 ---
 
@@ -59,5 +57,6 @@ make -j$(nproc)
 sudo make install
 sudo ldconfig
 
+---
 ### Run human_detect.py
 python3 detect_human.py /dev/video0 webrtc://@:8554/output
