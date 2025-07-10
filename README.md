@@ -1,7 +1,6 @@
-# Object Detection with Bluetooth Audio Alerts
+# Object Detection with Audio Alerts
 
-> A real-time object detection system on NVIDIA Jetson that sends **spoken alerts** to a connected **Bluetooth speaker** when specific objects (like humans, animals, or vehicles) are detected.
-
+> A real-time object detection system on NVIDIA Jetson that sends **spoken alerts** when specific objects (like humans, animals, or vehicles) are detected.
 
 ---
 
@@ -9,7 +8,7 @@
 
 This project uses the `jetson.inference` library with the **SSD-Mobilenet-v2** model to detect objects from a live camera feed on a Jetson device.
 
-When an object (e.g., a human, cat, dog, or vehicle) is detected with a confidence score above a threshold, the system announces it using `espeak` (text-to-speech) over a **Bluetooth audio device**.
+When an object (e.g., a human, cat, dog, or vehicle) is detected with a confidence score above a threshold, the system announces it using `espeak` (a text-to-speech engine).
 
 ### 💡 How It Works:
 1. **Camera Input**  
@@ -22,41 +21,37 @@ When an object (e.g., a human, cat, dog, or vehicle) is detected with a confiden
    Repeated detections are throttled with a cooldown timer to avoid audio spamming.
 
 4. **Audio Alerts**  
-   When an object passes the confidence threshold, a corresponding phrase is spoken via `espeak`.
-
-5. **Bluetooth Audio**  
-   Alerts are routed to a paired Bluetooth speaker or headset using `bluez` and `pulseaudio`.
+   When an object passes the confidence threshold, a corresponding phrase is spoken using `espeak`.
 
 ---
 
-## AI Model used in Object Detection
-Default detectNet model: SSD-Mobilet-v2
-SSD-Mobilenet-v2 is a lightweight and fast object detection model designed to run on edge devices like NVIDIA Jetson.
+## 🧠 AI Model: SSD-Mobilenet-v2
 
-**SSD (Single Shot Multibox Detector)**
-It divides the image into a grid and predicts bounding boxes + class labels for each grid cell.
+SSD-Mobilenet-v2 is a lightweight and fast object detection model designed to run efficiently on edge devices like NVIDIA Jetson.
 
-**Mobilenet (Backbone Network)**
-Designed for mobile/embedded use — it’s optimized for speed and low power.
+- **SSD (Single Shot Multibox Detector)**  
+  Divides the image into a grid and predicts bounding boxes + class labels for each cell, enabling fast real-time detection.
 
-**DataSet of SSD-Mobilenet-v2**
-DataSet - MSCOCO (Common objects in Context)
-330K+ images, 1.5M object instances stored
-ClassID 1: Human
-ClassID 2: Bicycle
-ClassID 3: Car
-ClassID 4: Motorcycle
-ClassID 5:
-ClassID ...
-ClassID 80: Toaster
+- **MobileNet (Backbone Network)**  
+  Optimized for low-power and high-speed inference, making it ideal for embedded systems.
 
---- 
-## 🔧 Installation & Dependencies
+- **Dataset**: MSCOCO (Common Objects in Context)  
+  - 330K+ labeled images  
+  - 1.5M+ object instances  
+  - 80 object classes, including:
+    - ClassID 1: Human  
+    - ClassID 2: Bicycle  
+    - ClassID 3: Car  
+    - ClassID 4: Motorcycle  
+    - ...  
+    - ClassID 80: Toaster
 
-### 🧱 System Dependencies
-Install core libraries, Bluetooth tools, and audio support:
+---
+
+## 🔧 Installation, Setup, & Running the Detector
 
 ```bash
+# Install system dependencies
 sudo apt update
 sudo apt install -y \
   git build-essential cmake \
@@ -64,12 +59,13 @@ sudo apt install -y \
   libssl-dev libncurses5-dev libelf-dev \
   linux-modules-extra-$(uname -r) \
   espeak \
-  pavucontrol \
-  bluetooth bluez blueman pulseaudio \
-  pulseaudio-module-bluetooth
+  pavucontrol
+
+# Install Python packages
 pip3 install --upgrade jetson-stats
 pip3 install numpy torch torchvision torchaudio
-pip install winrt-Windows.Devices.Bluetooth.Rfcomm
+
+# Clone and build jetson-inference
 git clone --recursive https://github.com/dusty-nv/jetson-inference
 cd jetson-inference
 mkdir build
@@ -79,6 +75,5 @@ make -j$(nproc)
 sudo make install
 sudo ldconfig
 
----
-### Run human_detect.py
+# Run the object detection script
 python3 detect_human.py /dev/video0 webrtc://@:8554/output
