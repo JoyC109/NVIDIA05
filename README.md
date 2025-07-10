@@ -29,6 +29,28 @@ When an object (e.g., a human, cat, dog, or vehicle) is detected with a confiden
 
 ---
 
+## AI Model used in Object Detection
+Default detectNet model: SSD-Mobilet-v2
+SSD-Mobilenet-v2 is a lightweight and fast object detection model designed to run on edge devices like NVIDIA Jetson.
+
+**SSD (Single Shot Multibox Detector)**
+It divides the image into a grid and predicts bounding boxes + class labels for each grid cell.
+
+**Mobilenet (Backbone Network)**
+Designed for mobile/embedded use — it’s optimized for speed and low power.
+
+**DataSet of SSD-Mobilenet-v2**
+DataSet - MSCOCO (Common objects in Context)
+330K+ images, 1.5M object instances stored
+ClassID 1: Human
+ClassID 2: Bicycle
+ClassID 3: Car
+ClassID 4: Motorcycle
+ClassID 5:
+ClassID ...
+ClassID 80: Toaster
+
+--- 
 ## 🔧 Installation & Dependencies
 
 ### 🧱 System Dependencies
